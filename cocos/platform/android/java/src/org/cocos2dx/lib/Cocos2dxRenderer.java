@@ -46,6 +46,7 @@ public class Cocos2dxRenderer implements GLSurfaceView.Renderer {
     private long mLastTickInNanoSeconds;
     private int mScreenWidth;
     private int mScreenHeight;
+    private int mIndex;
     private boolean mNativeInitCompleted = false;
 
     // ===========================================================
@@ -81,6 +82,10 @@ public class Cocos2dxRenderer implements GLSurfaceView.Renderer {
         Cocos2dxRenderer.nativeOnSurfaceChanged(width, height);
     }
 
+    public void setRenderIndex(final int index) {
+	    mIndex = index;
+    }
+
     @Override
     public void onDrawFrame(final GL10 gl) {
         /*
@@ -89,7 +94,7 @@ public class Cocos2dxRenderer implements GLSurfaceView.Renderer {
          */
 
         if (Cocos2dxRenderer.sAnimationInterval <= 1.0f / 60f * Cocos2dxRenderer.NANOSECONDSPERSECOND) {
-            Cocos2dxRenderer.nativeRender();
+            Cocos2dxRenderer.nativeRender(mIndex);
         } else {
             final long now = System.nanoTime();
             final long interval = now - this.mLastTickInNanoSeconds;
@@ -104,7 +109,7 @@ public class Cocos2dxRenderer implements GLSurfaceView.Renderer {
              * Render time MUST be counted in, or the FPS will slower than appointed.
             */
             this.mLastTickInNanoSeconds = System.nanoTime();
-            Cocos2dxRenderer.nativeRender();
+            Cocos2dxRenderer.nativeRender(mIndex);
         }
     }
 
@@ -117,7 +122,7 @@ public class Cocos2dxRenderer implements GLSurfaceView.Renderer {
     private static native void nativeTouchesMove(final int[] ids, final float[] xs, final float[] ys);
     private static native void nativeTouchesCancel(final int[] ids, final float[] xs, final float[] ys);
     private static native boolean nativeKeyEvent(final int keyCode,boolean isPressed);
-    private static native void nativeRender();
+    private static native void nativeRender(final int index);
     private static native void nativeInit(final int width, final int height);
     private static native void nativeOnSurfaceChanged(final int width, final int height);
     private static native void nativeOnPause();

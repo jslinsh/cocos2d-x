@@ -62,6 +62,8 @@ public class Cocos2dxGLSurfaceView extends GLSurfaceView {
     private boolean mSoftKeyboardShown = false;
     private boolean mMultipleTouchEnabled = true;
 
+    private int mIndex = 0;
+
     public boolean isSoftKeyboardShown() {
         return mSoftKeyboardShown;
     }
@@ -82,21 +84,22 @@ public class Cocos2dxGLSurfaceView extends GLSurfaceView {
     // Constructors
     // ===========================================================
 
-    public Cocos2dxGLSurfaceView(final Context context) {
+    public Cocos2dxGLSurfaceView(final Context context, final int index) {
         super(context);
 
-        this.initView();
+        this.initView(index);
     }
 
-    public Cocos2dxGLSurfaceView(final Context context, final AttributeSet attrs) {
+    public Cocos2dxGLSurfaceView(final Context context, final AttributeSet attrs, final int index) {
         super(context, attrs);
         
-        this.initView();
+        this.initView(index);
     }
 
-    protected void initView() {
+    protected void initView(final int index) {
         this.setEGLContextClientVersion(2);
         this.setFocusableInTouchMode(true);
+	mIndex = index;
 
         Cocos2dxGLSurfaceView.mCocos2dxGLSurfaceView = this;
         Cocos2dxGLSurfaceView.sCocos2dxTextInputWraper = new Cocos2dxTextInputWrapper(this);
@@ -156,6 +159,7 @@ public class Cocos2dxGLSurfaceView extends GLSurfaceView {
     public void setCocos2dxRenderer(final Cocos2dxRenderer renderer) {
         this.mCocos2dxRenderer = renderer;
         this.setRenderer(this.mCocos2dxRenderer);
+	this.mCococs2dRenderer.setRenderIndex(this.mIndex);
     }
 
     private String getContentText() {

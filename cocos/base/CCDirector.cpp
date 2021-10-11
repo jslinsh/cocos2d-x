@@ -930,6 +930,40 @@ void Director::replaceScene(Scene *scene)
     _nextScene = scene;
 }
 
+
+void runParallelScene(Scene* scene, int index)
+{
+        //CCASSERT(_runningScene, "Use runWithScene: instead to start the director");
+    CCASSERT(scene != nullptr, "the scene should not be null");
+    CCASSERT(index >= 0, "the index should not be negative");
+    
+    if (_runningScene == nullptr) {
+        runWithScene(scene);
+        return;
+    }
+    
+    
+    if (scene == _nextScene)
+        return;
+    
+    if (_nextScene)
+    {
+        if (_nextScene->isRunning())
+        {
+            _nextScene->onExit();
+        }
+        _nextScene->cleanup();
+        _nextScene = nullptr;
+    }
+
+    // does no need to enter stack
+    // Keep scene reference in app
+    //_scenesStack.replace(index, scene);
+    _nextScene = scene;
+    _parallelScenes[index] = scene;
+}
+
+
 void Director::pushScene(Scene *scene)
 {
     CCASSERT(scene, "the scene should not null");
@@ -1516,6 +1550,29 @@ void Director::mainLoop()
     {
         drawScene();
      
+        // release the objects
+        PoolManager::getInstance()->getCurrentPool()->clear();
+    }
+}
+
+void Director::mainLoop(int index)
+{
+    if(_parallelScenes[index])
+    _nextScene = _parallelScenes[index];
+
+    if (_purgeDirectorInNextLoop)
+    {
+        _purgeDirectorInNextLoop = false;
+        purgeDirector();
+    }
+    else if (_restartDirectorInNextLoop)
+    {
+        _restartDirectorInNextLoop = false;
+        restartDirector();
+    }
+    else if (! _invalid)
+    {
+        drawScene(); 
         // release the objects
         PoolManager::getInstance()->getCurrentPool()->clear();
     }

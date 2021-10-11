@@ -292,6 +292,13 @@ public:
      */
     void runWithScene(Scene *scene);
 
+    /*
+      Enters the Director's main loop with the given Scene.
+      Do this only for the multple view/multiple scence scenario
+      Do not mix with other functions (Push/Pop etc)
+    */
+    void runParallelScene(Scene* scene, int index);
+
     /** 
      * Suspends the execution of the running scene, pushing it on the stack of suspended scenes.
      * The new scene will be executed.
@@ -404,6 +411,12 @@ public:
      * @since 3.16
      */
     void mainLoop(float dt);
+
+    /** Invoke main loop to draw parallel scene
+     *  Previous set by runwithParallel.. functions 
+    */
+    void mainLoop(int sceneIndex);
+
 
     /** The size in pixels of the surface. It could be different than the screen size.
      * High-res devices might have a higher surface size than the screen size.
@@ -683,6 +696,8 @@ protected:
 
     /* scheduled scenes */
     Vector<Scene*> _scenesStack;
+
+    std::map<int, Scene*> _parallelScenes;
     
     /* last time the main loop was updated */
     std::chrono::steady_clock::time_point _lastUpdate;

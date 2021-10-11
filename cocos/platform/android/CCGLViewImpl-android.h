@@ -49,6 +49,7 @@ public:
     void end() override;
     void swapBuffers() override;
     void setIMEKeyboardState(bool bOpen) override;
+    void setIndex(int index);
 
 protected:
     GLViewImpl();
@@ -56,6 +57,7 @@ protected:
 
     bool initWithRect(const std::string& viewName, Rect rect, float frameZoomFactor);
     bool initWithFullScreen(const std::string& viewName);
+    int m_index = 0;
 };
 
 NS_CC_END

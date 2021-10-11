@@ -118,6 +118,10 @@ void GLViewImpl::swapBuffers()
 {
 }
 
+void CLViewImpl::setIndex(int index) {
+     m_index = index;
+}
+
 void GLViewImpl::setIMEKeyboardState(bool bOpen)
 {
     if (bOpen) {
