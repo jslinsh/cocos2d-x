@@ -159,7 +159,7 @@ public class Cocos2dxGLSurfaceView extends GLSurfaceView {
     public void setCocos2dxRenderer(final Cocos2dxRenderer renderer) {
         this.mCocos2dxRenderer = renderer;
         this.setRenderer(this.mCocos2dxRenderer);
-	this.mCococs2dRenderer.setRenderIndex(this.mIndex);
+	this.mCocos2dxRenderer.setRenderIndex(this.mIndex);
     }
 
     private String getContentText() {
