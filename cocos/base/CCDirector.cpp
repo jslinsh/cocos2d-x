@@ -931,7 +931,7 @@ void Director::replaceScene(Scene *scene)
 }
 
 
-void runParallelScene(Scene* scene, int index)
+void Director::runParallelScene(Scene* scene, int index)
 {
         //CCASSERT(_runningScene, "Use runWithScene: instead to start the director");
     CCASSERT(scene != nullptr, "the scene should not be null");

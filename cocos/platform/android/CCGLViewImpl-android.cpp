@@ -118,7 +118,7 @@ void GLViewImpl::swapBuffers()
 {
 }
 
-void CLViewImpl::setIndex(int index) {
+void GLViewImpl::setIndex(int index) {
      m_index = index;
 }
 
