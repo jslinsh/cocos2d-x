@@ -698,6 +698,7 @@ protected:
     Vector<Scene*> _scenesStack;
 
     std::map<int, Scene*> _parallelScenes;
+    bool animationStarted = false;
     
     /* last time the main loop was updated */
     std::chrono::steady_clock::time_point _lastUpdate;

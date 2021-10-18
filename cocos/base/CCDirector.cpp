@@ -937,25 +937,8 @@ void Director::runParallelScene(Scene* scene, int index)
     CCASSERT(scene != nullptr, "the scene should not be null");
     CCASSERT(index >= 0, "the index should not be negative");
     
-    if (_runningScene == nullptr) {
-        runWithScene(scene);
-        return;
-    }
+    startAnimation();
     
-    
-    if (scene == _nextScene)
-        return;
-    
-    if (_nextScene)
-    {
-        if (_nextScene->isRunning())
-        {
-            _nextScene->onExit();
-        }
-        _nextScene->cleanup();
-        _nextScene = nullptr;
-    }
-
     // does no need to enter stack
     // Keep scene reference in app
     //_scenesStack.replace(index, scene);
@@ -1517,7 +1500,9 @@ void Director::setEventDispatcher(EventDispatcher* dispatcher)
 
 void Director::startAnimation()
 {
-    startAnimation(SetIntervalReason::BY_ENGINE);
+    if(!animationStarted_) {
+        startAnimation(SetIntervalReason::BY_ENGINE);
+    }
 }
 
 void Director::startAnimation(SetIntervalReason reason)
@@ -1532,6 +1517,7 @@ void Director::startAnimation(SetIntervalReason reason)
 
     // fix issue #3509, skip one fps to avoid incorrect time calculation.
     setNextDeltaTimeZero(true);
+    animationStarted_ = true;
 }
 
 void Director::mainLoop()
@@ -1588,6 +1574,7 @@ void Director::mainLoop(float dt)
 void Director::stopAnimation()
 {
     _invalid = true;
+    animationStarted_ = false;
 }
 
 void Director::setAnimationInterval(float interval)
