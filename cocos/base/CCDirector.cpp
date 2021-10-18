@@ -942,6 +942,16 @@ void Director::runParallelScene(Scene* scene, int index)
     // does no need to enter stack
     // Keep scene reference in app
     //_scenesStack.replace(index, scene);
+
+    if (_parallelScenes[index])
+    {
+        if (_parallelScenes[index]->isRunning())
+        {
+            _parallelScenes[index]->onExit();
+        }
+        _parallelScenes[index]->cleanup();
+    }
+
     _nextScene = scene;
     _parallelScenes[index] = scene;
 }
