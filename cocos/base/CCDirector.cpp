@@ -1510,7 +1510,7 @@ void Director::setEventDispatcher(EventDispatcher* dispatcher)
 
 void Director::startAnimation()
 {
-    if(!animationStarted_) {
+    if(!_animationStarted) {
         startAnimation(SetIntervalReason::BY_ENGINE);
     }
 }
@@ -1527,7 +1527,7 @@ void Director::startAnimation(SetIntervalReason reason)
 
     // fix issue #3509, skip one fps to avoid incorrect time calculation.
     setNextDeltaTimeZero(true);
-    animationStarted_ = true;
+    _animationStarted = true;
 }
 
 void Director::mainLoop()
@@ -1584,7 +1584,7 @@ void Director::mainLoop(float dt)
 void Director::stopAnimation()
 {
     _invalid = true;
-    animationStarted_ = false;
+    _animationStarted = false;
 }
 
 void Director::setAnimationInterval(float interval)
