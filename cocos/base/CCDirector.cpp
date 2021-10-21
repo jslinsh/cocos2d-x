@@ -1553,8 +1553,9 @@ void Director::mainLoop()
 
 void Director::mainLoop(int index)
 {
-    if(_parallelScenes[index])
-    _nextScene = _parallelScenes[index];
+    if(_parallelScenes[index]) {
+        _nextScene = _parallelScenes[index];
+    }
 
     if (_purgeDirectorInNextLoop)
     {
