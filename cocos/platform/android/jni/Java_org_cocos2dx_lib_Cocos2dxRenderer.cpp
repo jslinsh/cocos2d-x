@@ -38,7 +38,7 @@ using namespace cocos2d;
 
 extern "C" {
 
-    JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeRender(JNIEnv* env, jint index) {
+    JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeRender(JNIEnv* env, jobject thiz, jint index) {
         cocos2d::Director::getInstance()->mainLoop((int)index);
     }
 
