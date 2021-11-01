@@ -30,6 +30,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
+import android.hardware.display.DisplayManager;
 import android.media.AudioManager;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
@@ -37,6 +38,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager.OnActivityResultListener;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -47,7 +49,6 @@ import org.cocos2dx.lib.Cocos2dxHelper.Cocos2dxHelperListener;
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLDisplay;
-import javax.microedition.khronos.egl.EGLContext;
 
 public abstract class Cocos2dxActivity extends Activity implements Cocos2dxHelperListener {
     // ===========================================================
@@ -276,11 +277,25 @@ public abstract class Cocos2dxActivity extends Activity implements Cocos2dxHelpe
 
         // Set framelayout as the content view
         setContentView(mFrameLayout);
+
+        showPresentation();
     }
 
+    //显示副屏
+    private void showPresentation() {
+        Log.d(TAG, "showPresentation");
+        DisplayManager mDisplayManager = (DisplayManager) getSystemService(Context.DISPLAY_SERVICE);
+        Display[] displays = mDisplayManager.getDisplays();
+        for (int i = 1; i < displays.length; i++) {
+            Cocos2dxGLSurfaceView glSurfaceView = new Cocos2dxGLSurfaceView(this, i);
+            MyPresentation myPresentation = new MyPresentation(Cocos2dxActivity.this, displays[i], glSurfaceView);
+            myPresentation.show();
+            Log.d(TAG, "myPresentation.show:" + i);
+        }
+    }
     
     public Cocos2dxGLSurfaceView onCreateView() {
-	// Todo: add view index to activities
+	    // Todo: add view index to activities
         Cocos2dxGLSurfaceView glSurfaceView = new Cocos2dxGLSurfaceView(this, 0);
         //this line is need on some device if we specify an alpha bits
         if(this.mGLContextAttrs[3] > 0) glSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
